@@ -57,15 +57,18 @@
           - @got_past.each do |r|
             = render :partial => "requests/got_past", :locals => {:r => r}
 
-- if not @user.active
+- if not @user
   #info.modal.hide.fade.in
     .modal-header
-      %h2 Welcome to Screw Me Yale!
+      %h2 Welcome to Screw Me Washington!
     .modal-body.info_modal
-      %p.big Before you can get screwin', we need some quick info about you:
-      = render :partial => "main/info", :locals => {:u => @user, :preplace => true}
+      %p.big If you've visited the site before, you can enter your session name here:
+      %input{:name => "new-user-input", :id => "new-user-input"}
+      %p Otherwise, one will be generated for you. If you ever want to come back to your screws and you aren't logged in anymore, just provide your session name!
+
     .modal-footer
-      %a#info_submit.btn.btn-primary{:href => "#", "data-dismiss"=>"modal"} Let's go!
+      %a#new_user_submit.btn.btn-inverse{:href => "#", "data-dismiss" => "modal"} I'm new :)
+      %a#restore_user_submit.btn.btn-primary{:href => "#", "data-dismiss"=>"modal"} Restore my screws!
 
 
   

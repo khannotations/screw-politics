@@ -17,34 +17,7 @@ class User < ActiveRecord::Base
 
   # CLASS VARIABLES
 
-  @@students = []
-
-  @@majors = ['African American Studies', 
-    'African Studies', 'American Studies', 'Anthropology', 'Applied Mathematics', 
-    'Applied Physics', 'Archaeological Studies', 'Architecture', 'Art', 
-    'Astronomy', 'Astronomy and Physics', 'Biology', 'Chemistry', 'Chinese', 
-    'Classical Civilization', 'Classics (Greek)', 'Classics (Greek and Latin)', 
-    'Classics (Latin)', 'Cognitive Science', 'Computer Science', 
-    'Computer Science and Mathematics', 'Computer Science and Psychology', 
-    'Computing and the Arts', 'East Asian Studies', 'Economics', 
-    'Economics and Mathematics', 'Electrical Engineering and Computer Science', 
-    'Engineering', 'Biomedical Engineering', 'Chemical Engineering', 
-    'Electrical Engineering', 'Environmental Engineering', 
-    'Mechanical Engineering', 'English', 'Environmental Studies', 
-    'Ethics, Politics, and Economics', 'Ethnicity, Race, and Migration', 
-    'Film Studies', 'French', 'Geology and Geophysics', 
-    'Germanic Languages and Literatures', 'German Studies', 'Global Affairs', 
-    'Greek, Ancient and Modern', 'History', 'History of Art', 
-    'History of Science', 'History of Medicine', 'Humanities', 'Global Health', 
-    'Italian', 'Japanese', 'Judaic Studies', 'Latin American Studies', 
-    'Linguistics', 'Literature', 'Mathematics', 'Mathematics and Philosophy', 
-    'Mathematics and Physics', 'Modern Middle East Studies', 
-    'Molecular Biophysics and Biochemistry', 'Music', 
-    'Near Eastern Languages and Civilizations', 'Philosophy', 'Physics', 
-    'Physics and Philosophy', 'Political Science', 'Portuguese', 'Psychology', 
-    'Religious Studies', 'Russian', 'Russian and East European Studies', 
-    'Sociology', 'South Asian Studies', 'Spanish', 'Special Divisional Major', 
-    'Statistics', 'Theater Studies', 'Undecided', "Women's, Gender, and Sexuality Studies"]
+  @@people = []
 
   @@events = {
     :sanity => "Rally to Restore Sanity", 
@@ -114,20 +87,15 @@ class User < ActiveRecord::Base
 
 
   def User.make_names
-    @@students = []
+    @@people = []
     User.all.each do |u|
-      if not @@students.include? u.lengthy_name
-        @@students << u.lengthy_name
-      else
-        puts "\n\nTHE WILD CHANCE THAT THERE ARE TWO PEOPLE IN THE SAME COLLEGE \
-        AND YEAR WITH THE SAME FIRST AND LAST NAME HAS BEEN REALIZED WTF YALE ADMISSIONS?!\n\n"
-      end
+      @@people << u.lengthy_name
     end
     return
   end
 
   def User.all_names
-    @@students
+    @@people
   end
 
   # Gets the user from the lengthy name, the inverse of lengthy name
@@ -150,76 +118,9 @@ class User < ActiveRecord::Base
     @user = User.where(fname: fname, lname: lname, college: college, year: year).first
 
   end
-  
-  def User.majors
-    @@majors
-  end
-
-  def User.long_college college
-    @@college_array.each do |key, value|
-      return key if value == college
-    end
-  end
-
-  # Fetches user email from Yale directory
-
-  def User.get_user netid
-    email_regex = /^\s*Email Address:\s*$/i
-    browser = User.make_cas_browser
-    browser.get("http://directory.yale.edu/phonebook/index.htm?searchString=uid%3D#{netid}")
-    u = nil
-    browser.page.search('tr').each do |tr|
-      puts "tr!"
-      field = tr.at('th').text
-      value = tr.at('td').text.strip
-      case field
-      when email_regex
-        u =  User.where(email: value).first
-        if u
-          u.netid = netid
-          u.save
-        end
-      end
-    end
-    u
-  end
-
-  def User.make_cas_browser
-    browser = Mechanize.new
-    browser.get( 'https://secure.its.yale.edu/cas/login' )
-    form = browser.page.forms.first
-    # If you're seeing this, please don't hack me...
-    form.username = "fak23"
-    form.password = ENV['CAS_PASS']
-    form.submit
-    browser
-  end
 
   # SETUP 
   User.make_names
 
-  # Fetches user email from Yale LDAP
-  # DOESN'T WORK NO MORE :(
-  def User.ldap netid
-    email = ""
-    begin
-      ldap = Net::LDAP.new( :host =>"directory.yale.edu" , :port =>"389" )
-      f = Net::LDAP::Filter.eq('uid', netid)
 
-      b = 'ou=People,o=yale.edu'
-      p = ldap.search(:base => b, :filter => f, :return_result => true).first
-
-      email = p['mail']
-      logger.debug :text => "LDAP EMAIL: --#{email}--"
-    rescue Exception => e
-      logger.debug :text => e
-      logger.debug :text => "*** ERROR with LDAP"
-    end
-    u = User.where(email: email).first
-    if u
-      u.netid = netid
-      u.save
-    end
-    u
-  end
 end
