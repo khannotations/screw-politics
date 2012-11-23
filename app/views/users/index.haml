@@ -1,0 +1,74 @@
+.row#user_info
+  = render :partial => "main/user_info"
+.row{:style => "margin-top: 20px;"}
+  .span10
+    - if(flash[:error])
+      .alert.alert-error.fade.in
+        %a.close{"data-dismiss" => "alert"} &times;
+        %span#error= flash[:error]
+    - else
+      .alert.alert-error.fade.in.hide
+        %a.close{"data-dismiss" => "alert"} &times;
+        %span#error
+    - if(flash[:success])
+      .alert.alert-success.fade.in
+        %a.close{"data-dismiss" => "alert"} &times;
+        %span#success= flash[:success]
+    - else
+      .alert.alert-success.fade.in.hide
+        %a.close{"data-dismiss" => "alert"} &times;
+        %span#success
+.well
+  .tabbable
+    %ul.nav.nav-tabs
+      %li.active
+        %a.main-tab{:href=>"#A", "data-toggle" =>"tab"} Screws
+      %li
+        %a.main-tab{:href=>"#E", "data-toggle" =>"tab"} 
+          Requests
+          - if not @got_requests.empty?
+            %sup{:style=> "color: blue; top: -6px;"} !!!
+
+    .tab-content
+      #A.tab-pane.active
+        - if not @got_requests.empty?
+          %h2 You have new requests!! 
+          %p Click on the 'Requests' tab to check them out
+        = render :partial => "screwconnectors/screws", :locals => {:screws => @screws}
+        #slider
+
+      #E.tab-pane
+        %h6 Requests for your screws
+        - if @got_requests.empty?
+          %p Your screws haven't gotten any requests :( Don't lose hope!
+        - @got_requests.each do |r|
+          = render :partial => "requests/got_request", :locals => {:r => r}
+        %h6 Pending requests you've made
+        - if @sent_requests.empty?
+          %p You haven't no pending requests...get searching!
+        - @sent_requests.each do |r|
+          = render :partial => "requests/sent_request", :locals => {:r => r}
+        %h6 Your past requests:
+        - if @sent_past.empty? and @got_past.empty?
+          %p You've never made any requests.
+        - else
+          - @sent_past.each do |r|
+            = render :partial => "requests/sent_past", :locals => {:r => r}
+          - @got_past.each do |r|
+            = render :partial => "requests/got_past", :locals => {:r => r}
+
+- if not @user.active
+  #info.modal.hide.fade.in
+    .modal-header
+      %h2 Welcome to Screw Me Yale!
+    .modal-body.info_modal
+      %p.big Before you can get screwin', we need some quick info about you:
+      = render :partial => "main/info", :locals => {:u => @user, :preplace => true}
+    .modal-footer
+      %a#info_submit.btn.btn-primary{:href => "#", "data-dismiss"=>"modal"} Let's go!
+
+
+  
+  
+
+

@@ -1,0 +1,78 @@
+#main {
+  border-radius: 5px;
+  background-color: rgb(250, 253, 250);
+  box-shadow: 0 0 40px 5px black;
+  color: #01326D;
+  padding: 30px;
+  p{
+    font-size: 15px;
+    line-height: 22px;
+    text-align: justify;
+  }
+  h2 {
+    text-align: center;
+    padding: 10px 0px;
+  }
+  a {
+    color: #1f41d1
+  }
+}
+
+#bottom {
+  text-align: center;
+  .btn {
+    width: 30%;
+    color: white;
+  }
+}
+
+#social {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+#user_info {
+  color: #FDFDFD;
+  vertical-align: top;
+}
+
+.screenshot {
+  border: 1pt solid silver;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#intensity {
+  width: 217px;
+  margin-bottom: 10px;
+}
+
+#help {
+  position:fixed;
+  left: 15%;
+  z-index: 10;
+  width: 70%;
+  height: 400px;
+  display:none;
+  .question {
+    color: DarkRed;
+    margin-top: 5px;
+
+  }
+  .answer {
+    margin-left: 10px;
+    font-size: 100%;
+  }
+}
+
+#help_close{
+  position: absolute; 
+  top: 10px; right: 20px; 
+  color: #555; 
+  font-size: 50px;
+  cursor: pointer;
+  &:hover {
+    color: black;
+  }
+}
