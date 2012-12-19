@@ -1,10 +1,9 @@
 class DummyUser < ActiveRecord::Base
   # connectors in which user is screwer
   has_many :screwconnectors, :foreign_key => "screwer_id"
-
   has_many :screws, :through => :screwconnectors
-  has_many :got_requests, :through => :screwerconnectors
-  has_many :sent_requests, :through => :screwerconnectors
+  has_many :got_requests, :through => :screwconnectors
+  has_many :sent_requests, :through => :screwconnectors
 
   @@words = %w(
     Hullabaloo Sponge Idiopathic Bobbin Bamboo Poppycock 
@@ -26,28 +25,31 @@ class DummyUser < ActiveRecord::Base
 
   # All sent requests
   def get_sent
-    self.sent_requests.includes({:to => :screw}, {:from => :screw}).where(accepted: nil).order("to_id")
+    self.sent_requests
+      .includes({:to => :screw}, {:from => :screw})
+      .where(accepted: nil)
+      .order("to_id")
   end
 
   # All received requests
   def get_got
-    self.got_requests.includes({:to => :screw}, {:from => :screw}).where(accepted: nil).order("to_id")
+    self.got_requests
+      .includes({:to => :screw}, {:from => :screw})
+      .where(accepted: nil)
+      .order("to_id")
   end
 
   def get_past_sent
-    self.sent_requests.includes({:to => :screw}, {:from => :screw}).where("accepted = ? OR accepted = ?", true, false).order("updated_at DESC")
+    self.sent_requests
+      .includes({:to => :screw}, {:from => :screw})
+      .where("accepted = ? OR accepted = ?", true, false)
+      .order("updated_at DESC")
   end
 
   def get_past_got
-    self.got_requests.includes({:to => :screw}, {:from => :screw}).where("accepted = ? OR accepted = ?", true, false).order("updated_at DESC")
-  end
-
-  def DummyUser.create_user
-    two = @@words.sample 2
-    name = two[0]+"-"+two[1]
-    u = DummyUser.create!({
-      name: name
-    })
-    u
+    self
+      .got_requests.includes({:to => :screw}, {:from => :screw})
+      .where("accepted = ? OR accepted = ?", true, false)
+      .order("updated_at DESC")
   end
 end

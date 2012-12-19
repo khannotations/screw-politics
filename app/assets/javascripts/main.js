@@ -1,7 +1,7 @@
 $(document).ready(function() {
   /* Firefox quick-fix */
-  if (navigator.userAgent.match(/firefox/i))
-    alert("Sorry, this app doesn't work well on Firefox. Please try Chrome or Safari—NOT Internet Explorer");
+  // if (navigator.userAgent.match(/firefox/i))
+  //  alert("Sorry, this app doesn't work well on Firefox. Please try Chrome or Safari—NOT Internet Explorer");
   /* Gets all the students and stores them */
   var all = {};
   $.get("/all", function(data) {
@@ -24,38 +24,7 @@ $(document).ready(function() {
 
   loc = window.location.pathname;
 
-  /* If this is the user's first visit, the #info_button will be rendered,
-  which triggers a modal for updating preferences and setting the user 'active' */
-  if (loc !== "/screwers") {
-    setTimeout(function() {
-      $("#info").modal({
-        keyboard: false,
-        backdrop: "static"
-      })
-      .modal("show");
-    }, 200);
-  }
-
-  /* Controlling paths */
-
-  var paths = {
-    "/screws": "#A",
-    "/requests": "#E",
-    "/screwers": "#B",
-    "/profile": "#C"
-  };
-  /* Routes to correct tab based on hash */
-  /* Sets the nav bar style depending on url */
-
-  if(paths[loc]) {
-    $("a[href='"+paths[loc]+"']").click();
-    $("li.home").addClass("active");
-  }
-  else if (loc === "/about") {
-    $("li.about").addClass("active");
-    $("li.help").hide();
-  }
-  else if (loc.match(/\/match\//)) {
+  if (loc.match(/\/match\//)) {
     setTimeout(function() {
       window.location.reload();
     }, (60*60*1000)); // Reload page every hour to update screw options (inefficient, i know)
@@ -106,26 +75,6 @@ $(document).ready(function() {
   $("#help_close").click(function() {
     $("#help").slideUp("fast");
   });
-
-  /* To logout of CAS */
-  $("#logout").on("click", function() {
-    $.get("/uncas");
-  });
-  var back = false;
-
-  /* History management */
-
-  $("a.main-tab").click(function() {
-    if(!back)
-      window.history.pushState({view: $(this).attr("href")}, "Screw Me Yale",  $(this).html().toLowerCase().replace("/ /g", "")); // Strip, set as path
-    back = false;
-  });
-
-  window.onpopstate = function(event) {
-    l = (event.state && event.state.view) || "";
-    back = true;
-    $("a[href='"+l+"']").click();
-  };
 
   $(".info_in").keypress(function(e) {
     if(e.which == 13) {
@@ -256,7 +205,7 @@ $(document).ready(function() {
       r_id: $(t).attr("r_id")
     }, function(data) {
       if (data.status == "success")
-        window.location.reload();
+        window.location = "/home";
       else if (data.status == "fail")
         $("#error").html(data.flash).parents(".alert").slideDown("fast");
 
@@ -299,83 +248,6 @@ $(document).ready(function() {
       }
       else if (data.status == "fail")
         $("#error").html(data.flash).parents(".alert").slideDown("fast");
-    }).error(ajax_error);
-  });
-
-  /* ======= SCREWER TAB ======= */
-  /* Remove screwer */
-  $(".remove_screwer").click(function() {
-    t = this;
-    $.post("/delete", {
-      sc_id: $(t).attr("sc_id"),
-      initiator: "screw"
-    }, function(data) {
-      if(data.status == "success") {
-        $("#success").html(data.flash).parents(".alert").slideDown("fast");
-        $(t).parents(".screwer").fadeOut(function(){
-          $(t).parents(".screwer").remove();
-        });
-      }
-      else if (data.status == "fail") {
-        $("#error").html(data.flash).parents(".alert").slideDown("fast");
-      }
-    }).error(ajax_error);
-  });
-
-  /* ======= PROFILE TAB ======= */
-  /* Profile tab error checking */
-  $(".info_in").focus(function() {
-    $(this).parents(".control-group").removeClass("error");
-  });
-  /* Modal at the beginning */
-  $("#info_submit").click(function(e) {
-    t = this;
-    if(validate(t)) {
-      bod = $(t).parents(".modal").find(".modal-body")[0];
-      $.post("/info", {
-        gender: $(bod).find("#gender").val(),
-        preference: $(bod).find("#preference").val(),
-        major: $(bod).find("#major").val(),
-        nickname: $(bod).find("#nickname").val()
-      }, function(data) {
-        if(data.status == "fail") {
-          $("#error").html(data.flash).parents(".alert").slideDown("fast");
-          setTimeout(function() {
-            $("#info_submit").click();
-          }, 500);
-        }
-        else {
-          $("#user_info").html(data);
-          $("#success").html("Welcome to Screw Me Yale! Start setting someone up by typing their name in the input box below!").parents(".alert").slideDown("fast");
-        }
-      }).error(ajax_error);
-    }
-    else {
-      setTimeout(function() {
-        $("#info_button").click();
-      }, 500);
-    }
-  }).error(ajax_error);
-  /* Update post request from profile tab */
-  $("#user_update").click(function() {
-    t = this;
-    $(t).addClass("disabled");
-    bod = $(t).parents(".profile");
-    $.post("/info", {
-      gender: $(bod).find("#gender").val(),
-      preference: $(bod).find("#preference").val(),
-      major: $(bod).find("#major").val(),
-      nickname: $(bod).find("#nickname").val()
-    }, function(data) {
-      if(data.status == "fail")
-        $("#error").html(data.flash).parents(".alert").slideDown("fast");
-      else {
-        $("#user_info").fadeOut("fast", function() {
-          $(this).html(data).fadeIn("fast");
-          $("#success").html("Attributes updated!").parents(".alert").slideDown("fast");
-          $(t).removeClass("disabled");
-        });
-      }
     }).error(ajax_error);
   });
 
@@ -432,27 +304,4 @@ $(document).ready(function() {
 
 function ajax_error() {
   $("#error").html("An error occurred -- try refreshing the page. If the problem persists, please contact the webmaster or try again later :(").parents(".alert").slideDown("fast");
-}
-
-/* Validates the standard _info partial */
-function validate(obj) {
-
-  bod = $(obj).parents(".modal").find(".modal-body")[0];
-  nick = $(bod).find("#nickname");
-  major = $(bod).find("#major");
-  flag = true;
-  if($(major).val() === "") {
-    flag = false;
-    $(major).parents(".control-group").addClass("error");
-    $(major).attr("placeholder", "A major! (Undecided if you're unsure)");
-
-  }
-  /*
-  else if($(nick).val() == "") {
-    flag = false
-    $(nick).parents(".control-group").addClass("error")
-    $(nick).attr("placeholder", "A valid nickname, please!")
-  }
-  */
-  return flag;
 }

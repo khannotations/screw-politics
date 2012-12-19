@@ -1,6 +1,6 @@
 class Screwconnector < ActiveRecord::Base
   belongs_to :screwer, :class_name => "DummyUser" # Person screwing
-  belongs_to :screw, :class_name => "User" # Person being screwed
+  belongs_to :screw, :class_name => "User"        # Person being screwed
   # The screw with whom this screw was matched, if any (default is 0, i.e. unmatched)
   belongs_to :match, :class_name => "Screwconnector" 
 
@@ -22,16 +22,13 @@ class Screwconnector < ActiveRecord::Base
 
   # returns an array of [screws, intensity, event, all]
   def find_everything
-    # Differentiate between those which are being screwed (the screw of at least one screwconnector) and those who aren't
-    # of the former, find those who haven't been matched for the event you're going for
-
     p = self.screw;
-    my_id = session[:user_id]
+    my_id = self.screwer.id
     if p.preference == 3
       # Get all users matching preferences that aren't the screw him/herself or the screwer
-      all = User.includes({:screwconnectors => :screw}, :screwers).where(["(preference = ? OR preference = 3) AND id <> ?", p.party, p.id]).order("updated_at DESC");
+      all = User.where(["(preference = ? OR preference = 3) AND id <> ?", p.party, p.id]).order("updated_at DESC");
     else
-      all = User.includes({:screwconnectors => :screw}, :screwers).where(["(preference = ? OR preference = 3) AND (party = ?) AND id <> ?", p.party, p.preference, p.id]).order("updated_at DESC");
+      all = User.where(["(preference = ? OR preference = 3) AND (party = ?) AND id <> ?", p.party, p.preference, p.id]).order("updated_at DESC");
     end
     all_screw_matches = [] # subset of all matches
     intensity_matches = [] # subset of all_screw matches
@@ -52,6 +49,7 @@ class Screwconnector < ActiveRecord::Base
           event_matches.append(sc) if (sc.event == self.event)
 
         # If they are one of my screws, they should still show up as a person
+        # as long as they aren't going to the same event
         elsif sc.event != self.event
           all_matches.append({:type => "user", :match => a})
         end

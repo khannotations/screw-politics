@@ -3,13 +3,17 @@ class UsersController < ApplicationController
 
   def index
     @user = DummyUser.find_by_id(session[:user_id])
-    if @user
-      @screws = @user.screws.includes(:screw).where(match_id: 0)
-      @sent_requests = @user.get_sent
-      @got_requests = @user.get_got
-      @sent_past = @user.get_past_sent
-      @got_past = @user.get_past_got
+    if not @user
+      @user = DummyUser.create()
+      session[:user_id] = @user.id
+    else
+      # flash[:success] = "We were able to recover your previous session! All is not lost :)"
     end
+    @screws = @user.screwconnectors.includes(:screw).where(match_id: 0)
+    @sent_requests = @user.get_sent
+    @got_requests = @user.get_got
+    @sent_past = @user.get_past_sent
+    @got_past = @user.get_past_got
   end
 
   # Takes a user's name (e.g. Faiaz "Rafi" Khan), parses out the nickname
@@ -17,13 +21,13 @@ class UsersController < ApplicationController
   # typeahead works
   def whois
     me = DummyUser.find(session[:user_id])
-    if not me or not me.active
+    if not me
       render :json => {:status => "inactive"}
       return
     end
     @user = User.identify(params[:name])
     p = {}
-    if @user and @user != me
+    if @user
       p[:name] = @user.fullname
       p[:id] = @user.id
       p[:select] = @user.make_select 

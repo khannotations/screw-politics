@@ -27,11 +27,3 @@
   .modal-footer
     %a#client_cancel.btn.btn-danger{:href => "#", "data-dismiss"=>"modal"} Cancel
     %a#client_submit.btn.btn-primary{:href => "#", "data-dismiss"=>"modal"} Set them up!
-#sc_prefs.modal.hide.fade.in
-  .modal-header
-    %h2 Hold up there!
-  .modal-body.screw_info
-    %p.big Before we get to pairing your wonderful screw with other wonderful screws, we need to know a bit about them:
-    = render :partial => "main/info", :locals => {:preplace => false}
-  .modal-footer
-    %a#sc_sub.btn.btn-primary{:href => "#"} Save!

@@ -6,11 +6,11 @@
       %img.user_image.round{:src => screw.picture, :width => "75px", :height => "90px"}
     .span{:style => "color: #FDFDFD;"}
       %h2{:style => "display: inline-block"}= "#{screw.fullname}"
-      .small= "#{screw.college} #{screw.year}"
-      - if screw.gender != 0 and screw.preference != 0
+      .small= "#{screw.profession}"
+      - if screw.party != 0 and screw.preference != 0
         .small 
           A 
-          %b= screw.gen
+          %b= screw.par
           looking for 
           %b= screw.pref
           %br 
@@ -54,7 +54,7 @@
         .row{:style => "margin-left: 0px;"}
           - if @all_screws.empty?
             %h3 Sorry, no one to screw with!
-            %h5 Tell your friends to screw their roommates for a bigger sample size!
+            %h5 Maybe they need to broaden their outlook...
           - else
             - @all_screws.each do |sc|
               = render :partial => "match_sc", :locals => {:sc => sc}
@@ -63,7 +63,7 @@
           .row{:style => "margin-left: 0px;"}
             - if @int_matches.empty?
               %h3 Sorry, no one with a similar intensity :(
-              %h5 Tell your friends to screw their roommates for a bigger sample size!
+              %h5 Maybe they need to broaden their outlook...
             - else
               - @int_matches.each do |sc|
                 = render :partial => "match_sc", :locals => {:sc => sc}
@@ -72,7 +72,7 @@
           .row{:style => "margin-left: 0px;"}
             - if @event_matches.empty?
               %h3 Sorry, no one going to the same event :(
-              %h5 Tell your friends to screw their roommates for a bigger sample size!
+              %h5 Maybe they need to broaden their outlook...
             - else
               - @event_matches.each do |sc|
                 = render :partial => "match_sc", :locals => {:sc => sc}
@@ -80,7 +80,7 @@
         .row{:style => "margin-left: 0px;"}
           - if @all_matches.empty?
             %h3 Sorry, no matches right now. 
-            %h5 Tell your friends to screw their roommates for a bigger sample size!
+            %h5 Maybe they need to broaden their outlook...
           - else
             - @all_matches.each do |match|
               - if match[:type] == "user"
@@ -103,14 +103,16 @@
       looking for 
       %b.match_pref
       %br
-      majoring in 
-      %b.match_major
-      %br
-      for 
+      going to  
       %b.match_event
       %br 
       with intensity
       %b.match_intensity
+      \.
+      %br
+      %br
+      Profession: 
+      %b.match_major
   .modal-footer
     %a.btn.btn-danger{:href => "#", "data-dismiss"=>"modal"} Not interested
     %a#match_submit.btn.btn-primary{:href => "#", "data-dismiss"=>"modal", "from_id" => @sc.id} I want 'em!..for my screw
@@ -130,7 +132,8 @@
         looking for 
         %b.match_pref
         %br
-        majoring in 
+        %br
+        Profession: 
         %b.match_major
     .unmatch_bottom{:style => "margin-top: 10px; float: left;"}
       %p.match_text{:style => "color: #01326D"}

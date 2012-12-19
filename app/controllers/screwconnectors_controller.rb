@@ -1,13 +1,10 @@
 class ScrewconnectorsController < ApplicationController
   layout "main"
-
-  before_filter CASClient::Frameworks::Rails::Filter, :except => [:show]
   
   def show
-    @user = User.find(session[:user_id])
+    @user = DummyUser.find(session[:user_id])
     @sc = Screwconnector.includes(:screw, :screwer).where(id: params[:id]).first
     if not @user or not @sc or not @sc.screwer == @user
-      logger.error "SHOW", @user.inspect, @sc.inspect, "\n\n\n\n\n"
       flash[:error] = "Sorry, you can't access that url."
       redirect_to :root
       return 
@@ -15,9 +12,9 @@ class ScrewconnectorsController < ApplicationController
 
     everything = @sc.find_everything
     @all_screws = everything[0]
-    @int_matches = everything[1] # Matches by similar intensity
-    @event_matches = everything[2] # Matches by same event
-    @all_matches = everything[3] # All users that are matches
+    @int_matches = everything[1]        # Matches by similar intensity
+    @event_matches = everything[2]      # Matches by same event
+    @all_matches = everything[3]        # All users that are matches
     
   end
 
@@ -25,8 +22,12 @@ class ScrewconnectorsController < ApplicationController
     user_id = session[:user_id]
     # Instead of using @user.screws to avoid retrieving user
     count = Screwconnector.where(screwer_id: user_id, match_id: 0).count
-    if count >= 5
-      render :json => {:status => "fail", :flash => "Sorry, you can only screw up to five people simultaneously. Match one of them first and try again."}
+    if count >= 10
+      render :json => 
+        {
+          :status => "fail", 
+          :flash => "Sorry, you can only screw up to ten people simultaneously. Match one of them first and try again."
+        }
       return
     end
     sc = Screwconnector.includes(:screw).where(
@@ -34,34 +35,26 @@ class ScrewconnectorsController < ApplicationController
       event: params[:event]
       ).first
     if sc
-      if sc.match_id == 0 # Already matched
-        puts "\n\n\n\nin sc!\n\n\n\n\n"
-        render :json => {:status => "fail", :flash => "Someone is already screwing #{sc.screw.nickname} for #{sc.event}...better be quicker next time!"}
-        
-      elsif sc.screwer_id == user_id
-        render :json => {:status => "fail", :flash => "You're already screwing #{sc.screw.nickname} for #{sc.event}!"}
+      if sc.screwer_id == user_id
+        render :json => 
+          {
+            :status => "fail", 
+            :flash => "You're already screwing #{sc.screw.nickname} for #{sc.event}!"
+          }
+        return
       end
-      return
     end
+    event = User.get_event(params[:event])
     sc = Screwconnector.create(
       screw_id: params[:screw_id], 
       screwer_id: user_id, 
       intensity: params[:intensity],
-      event: params[:event]
+      event: event
     )
-    if sc.errors.messages.empty?
-      # Email new screw!
-      if NewsMailer.new_screw(sc)
-        render :partial => "screwconnectors/main", :locals => {:sc => sc}
-      else
-        sc.destroy # destroy the screw if emails aren't working
-        render :json => {:status => "fail", :flash => "There's was an email problem--please contact the web admin."}
-        logger.error "\n\nNew screw email not sent!!\n\n" 
-      end
-      return
+    unless sc.errors.messages.empty?
+      render :json => {:status => "fail", :flash => sc.errors.messages}
     end
-    render :json => {:status => "fail", :flash => sc.errors.messages}
-
+    render :partial => "screwconnectors/main", :locals => {:sc => sc}
   end
 
   def destroy

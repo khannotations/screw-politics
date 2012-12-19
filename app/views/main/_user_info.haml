@@ -1,8 +1,8 @@
 .span1{:style => "width: 80px;"}
   %img.user_image.round{:src => "/assets/anon.jpg", :width => "80px", :height => "96px"}
-.span3
-  %h2{:style => "display: inline-block"} Hey Son of Man!
-  .small 
-    In the real app, your user information (college, graduating year, gender and romantic preferences) would show here. For now, enjoy being 
-    %emph completely anonymous
-    \.
+.span6
+  %h2{:style => "display: inline-block"} Hey!
+  .small
+    In the real app, your user information (Yale residential college, graduating year, gender and romantic preferences) would show here. For now, enjoy being 
+    %span{:style => "font-style: italic;"} completely anonymous
+    \. (User id: #{session[:user_id]})

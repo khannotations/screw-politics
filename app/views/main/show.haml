@@ -56,3 +56,19 @@
             = render :partial => "requests/sent_past", :locals => {:r => r}
           - @got_past.each do |r|
             = render :partial => "requests/got_past", :locals => {:r => r}
+
+- if not @user.active
+  #info.modal.hide.fade.in
+    .modal-header
+      %h2 Welcome to Screw Me Yale!
+    .modal-body.info_modal
+      %p.big Before you can get screwin', we need some quick info about you:
+      = render :partial => "main/info", :locals => {:u => @user, :preplace => true}
+    .modal-footer
+      %a#info_submit.btn.btn-primary{:href => "#", "data-dismiss"=>"modal"} Let's go!
+
+
+  
+  
+
+
