@@ -20,6 +20,9 @@ Screwwashington::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
 
+
+  config.assets.initialize_on_precompile = false
+
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH
 
