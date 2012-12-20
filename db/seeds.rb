@@ -1,6 +1,6 @@
 puts "Seeding..."
 users = [
-  # Head of state
+  # Statesmen
   {
     fname: "Barack",
     lname: "Obama",
@@ -18,6 +18,15 @@ users = [
     profession: "First Lady"
   },
   {
+    fname: "Joe",
+    nickname: "Bidenator",
+    lname: "Biden",
+    picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Joe_Biden_official_portrait_crop.jpg/220px-Joe_Biden_official_portrait_crop.jpg",
+    party: 2,
+    preference: 2,
+    profession: "VPOTUS, White House Bro"
+  },
+  {
     fname: "John",
     lname: "Boehner",
     picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/John_Boehner_official_portrait.jpg/220px-John_Boehner_official_portrait.jpg",
@@ -26,15 +35,92 @@ users = [
     profession: "Speaker of the House"
   },
   {
+    fname: "Bill",
+    lname: "Clinton",
+    nickname: "Ladykiller",
+    picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Bill_Clinton.jpg/220px-Bill_Clinton.jpg",
+    party: 2,
+    preference: 3,
+    profession: "Former POTUS, Democratic Campaign Machine"
+  },
+  {
+    fname: "Hillary",
+    lname: "Clinton",
+    picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Hillary_Clinton_official_Secretary_of_State_portrait_crop.jpg/220px-Hillary_Clinton_official_Secretary_of_State_portrait_crop.jpg",
+    party: 2,
+    preference: 3,
+    profession: "Secretary of State, Former First Lady, A symbol for women everywhere"
+  },
+  {
+    fname: "George",
+    lname: "Bush",
+    nickname: "Dubya",
+    picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/George-W-Bush.jpeg/220px-George-W-Bush.jpeg",
+    party: 1,
+    preference: 1,
+    profession: "Former POTUS, ...too many jokes to make here"
+  },
+  {
+    fname: "Dick",
+    lname: "Cheney",
+    nickname: "Shotgun",
+    picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/8/88/46_Dick_Cheney_3x4.jpg/220px-46_Dick_Cheney_3x4.jpg",
+    party: 1,
+    preference: 1,
+    profession: "Former VPOTUS, Destroyer of Worlds"
+  },
+  {
+    fname: "Newt",
+    lname: "Gingrich",
+    picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Newt_Gingrich_by_Gage_Skidmore_6.jpg/220px-Newt_Gingrich_by_Gage_Skidmore_6.jpg",
+    party: 1,
+    preference: 1,
+    profession: "Former Speaker of the House, a newt"
+  },
+
+  # Media
+  {
     fname: "Rush",
     lname: "Limbaugh",
     picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Limbaugh_Award_cropped.jpg/180px-Limbaugh_Award_cropped.jpg",
     party: 1,
     preference: 1,
     profession: "Talk Show Host, Instigator, 3-time divorcee"
+  },
+  {
+    fname: "Kieth",
+    lname: "Olbermann",
+    picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Keith_Olbermann-1.jpg/220px-Keith_Olbermann-1.jpg",
+    party: 2,
+    preference: 2,
+    profession: "Political commentator, Campaign contributor"
+  },
+  {
+    fname: "Bill",
+    lname: "O'Reilly",
+    picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Bill_O%27Reilly_at_the_World_Affairs_Council_of_Philadelphia_%28cropped%29.jpg/220px-Bill_O%27Reilly_at_the_World_Affairs_Council_of_Philadelphia_%28cropped%29.jpg",
+    party: 1,
+    preference: 1,
+    profession: "Political commentator, Self-proclaimed 'Independent'"
+  },
+  {
+    fname: "Rachel",
+    lname: "Maddow", 
+    picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Rachel_Maddow_in_Seattle_cropped.png/220px-Rachel_Maddow_in_Seattle_cropped.png",
+    party: 2, 
+    preference: 2,
+    profession: "Commentator, First openly gay anchor of a major US primetime news show!"
+  },
+  {
+    fname: "Glenn",
+    lname: "Beck",
+    picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Glenn_Beck_by_Gage_Skidmore_3.jpg/220px-Glenn_Beck_by_Gage_Skidmore_3.jpg",
+    party: 1, 
+    preference: 1, 
+    profession: "Television host, Defender of Israel and American Values"
   }
 
-  # Media
+  
 ]
 
 users.each do |u|

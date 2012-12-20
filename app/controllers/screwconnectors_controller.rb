@@ -58,44 +58,13 @@ class ScrewconnectorsController < ApplicationController
   end
 
   def destroy
-
     sc = Screwconnector.find(params[:sc_id]).destroy
     if sc
-      if params[:initiator] == "screw"
-        # Send warning-ish email to screwer
-        logger.error "\n\nUnwanted screwer mail not sent!!\n\n" if not NewsMailer.unwanted_screwer(sc)
-        render :json => {:status => "success", :flash => "Yeah! You don't need that kinda drama."}
-      else
-        flash[:success] = "Yeah! You don't need 'em anyway!"
-        # email not necessary
-        render :json => {:status => "success"} # triggers page reload
-      end
-    else 
-      render :json => {:status => "fail", :flash => "You tryna mess with me??"}
-    end
-  end
-
-  def info
-    @user = User.find(params[:id])
-    if not @user
-      render :json => {:status => "fail", :flash => "This person doesn't exist...please stop messing around"}
-    end
-    if @user.id == session[:user_id] or not @user.active
-      g = params[:gender].to_i
-      p = params[:preference].to_i
-      @user.gender = g if (1..2).include? g
-      @user.preference = p if (1..3).include? p
-      @user.major = params[:major] if params[:major] and params[:major] != ""
-      @user.nickname = params[:nickname].gsub(/\s/, "") if params[:nickname] and params[:nickname] != ""
-      @user.save
-      flash[:success] = "Preferences updated...now get matching!"
+      flash[:success] = "Yeah! You don't need 'em anyway!"
+      # email not necessary
       render :json => {:status => "success"} # triggers page reload
-      if params[:nickname] and params[:nickname] != ""
-        User.make_names
-      end
-      return
-    else
-      render :json => {:status => "fail", :flash => "Stop screwing around"}
+    else 
+      render :json => {:status => "fail", :flash => "Screw not found..."}
     end
   end
 

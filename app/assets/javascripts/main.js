@@ -1,7 +1,7 @@
 $(document).ready(function() {
   /* Firefox quick-fix */
-  // if (navigator.userAgent.match(/firefox/i))
-  //  alert("Sorry, this app doesn't work well on Firefox. Please try Chrome or Safari—NOT Internet Explorer");
+  if (navigator.userAgent.match(/firefox/i))
+    alert("Sorry, this app doesn't work well on Firefox. Please try Chrome or Safari—NOT Internet Explorer");
   /* Gets all the students and stores them */
   var all = {};
   $.get("/all", function(data) {
@@ -22,27 +22,19 @@ $(document).ready(function() {
     
   }).error(ajax_error);
 
-  loc = window.location.pathname;
-
-  if (loc.match(/\/match\//)) {
-    setTimeout(function() {
-      window.location.reload();
-    }, (60*60*1000)); // Reload page every hour to update screw options (inefficient, i know)
-  }
-
   /* Makes the slider of the intensity picker */
   captions = [
-    ": \"Wanna do homework after?\"",
-    ": \"Holding hands is fun!\"",
-    ": \"You can look but you can't touch\"",
-    ": \"Let's boogie!\"",
-    ": \"Call me, maybe?\"",
-    ": \"Oooo I wanna dance with somebody\"",
-    ": \"Party rock in the college\"",
-    ": \"My hips don't lie\"",
-    ": \"Tonight's gonna be a good night ;)\"",
-    ": \"Straight up DTF\"",
-    ": \"Blackout. By 10 p.m.\""
+    ": \"Collaboration is my first, last and midde name.\"",
+    ": \"Collaboration is my midde name.\"",
+    ": \"My favorite pasttime is reaching across the aisle.\"",
+    ": \"I'm red-blue colorblind.\"",
+    ": \"Democracy is beautiful.\"",
+    ": \"I'll work with you. Probably.\"",
+    ": \"The party system is beautiful.\"",
+    ": \"What's a compromise?\"",
+    ": \"And I said, 'No, no, no'\"",
+    ": \"Fillibuster. Period.\"",
+    ": \"Party line 'til I die\""
   ];
   var slider_value = 6;
   $("#amount").html(slider_value);
