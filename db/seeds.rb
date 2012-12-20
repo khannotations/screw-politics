@@ -10,7 +10,7 @@ users = [
     profession: "POTUS"
   },
   {
-    fname: "Michele",
+    fname: "Michelle",
     lname: "Obama",
     picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Michelle_Obama_official_portrait_headshot.jpg/225px-Michelle_Obama_official_portrait_headshot.jpg",
     party: 2,
@@ -77,6 +77,14 @@ users = [
     preference: 1,
     profession: "Former Speaker of the House, a newt"
   },
+  {
+    fname: "Nancy",
+    lname: "Pelosi",
+    picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Speaker_Nancy_Pelosi.jpg/220px-Speaker_Nancy_Pelosi.jpg",
+    party: 2,
+    preference: 2,
+    profession: "U.S. House Minority Leader, 1st female Speaker"
+  },
 
   # Media
   {
@@ -118,6 +126,22 @@ users = [
     party: 1, 
     preference: 1, 
     profession: "Television host, Defender of Israel and American Values"
+  },
+  {
+    fname: "Jon",
+    lname: "Stewart",
+    picture: "http://bpr.berkeley.edu/wordpress/wp-content/uploads/2011/06/jon-stewart.jpg",
+    party: 2,
+    preference: 3,
+    profession: "Political satirist, Champion of sanity"
+  },
+  {
+    fname: "Steven",
+    lname: "Colbert",
+    picture: "http://img2-2.timeinc.net/ew/dynamic/imgs/070304/172430__colbert_l.jpg",
+    party: 1,
+    preference: 3,
+    profession: "Political satirist, The Republican-est"
   }
 
   
