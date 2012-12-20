@@ -1,4 +1,4 @@
-puts "Seeding..."
+puts "Creating politicians..."
 users = [
   # Statesmen
   {
@@ -6,7 +6,7 @@ users = [
     lname: "Obama",
     picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Official_portrait_of_Barack_Obama.jpg/220px-Official_portrait_of_Barack_Obama.jpg",
     party: 2,
-    preference: 1,
+    preference: 3,
     profession: "POTUS"
   },
   {
@@ -14,8 +14,8 @@ users = [
     lname: "Obama",
     picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Michelle_Obama_official_portrait_headshot.jpg/225px-Michelle_Obama_official_portrait_headshot.jpg",
     party: 2,
-    preference: 1,
-    profession: "First Lady"
+    preference: 3,
+    profession: "First Lady, The classiest woman to ever have existed"
   },
   {
     fname: "Joe",
@@ -114,7 +114,7 @@ users = [
   {
     fname: "Rachel",
     lname: "Maddow", 
-    picture: "http://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Rachel_Maddow_in_Seattle_cropped.png/220px-Rachel_Maddow_in_Seattle_cropped.png",
+    picture: "/assets/maddow.jpg",
     party: 2, 
     preference: 2,
     profession: "Commentator, First openly gay anchor of a major US primetime news show!"
@@ -130,26 +130,58 @@ users = [
   {
     fname: "Jon",
     lname: "Stewart",
-    picture: "http://bpr.berkeley.edu/wordpress/wp-content/uploads/2011/06/jon-stewart.jpg",
+    picture: "/assets/jon.jpg",
     party: 2,
     preference: 3,
     profession: "Political satirist, Champion of sanity"
   },
   {
-    fname: "Steven",
+    fname: "Stephen",
     lname: "Colbert",
-    picture: "http://img2-2.timeinc.net/ew/dynamic/imgs/070304/172430__colbert_l.jpg",
+    picture: "/assets/colbert.jpg",
     party: 1,
     preference: 3,
     profession: "Political satirist, The Republican-est"
   }
 
-  
 ]
 
 users.each do |u|
   u[:nickname] = u[:fname] unless u[:nickname]
   User.create(u)
 end
+
+puts "Creating dummy users..."
+
+# :sanity => "Rally to Restore Sanity", 
+# :fear => "Rally to Keep Fear Alive",
+# :sou => "State of the Union",
+# :elections => "2016 Elections"
+
+u1 = DummyUser.create
+sc1 = Screwconnector.create({
+  screw: User.find_by_fname("Barack"), # Obama
+  screwer: u1,
+  intensity: 3,
+  event: User.get_event("sou")
+})
+sc2 = Screwconnector.create({
+  screw: User.find_by_fname("Jon"), # Jon Stewart
+  screwer: u1,
+  intensity: 6,
+  event: User.get_event("sanity")
+})
+sc3 = Screwconnector.create({
+  screw: User.find_by_lname("Colbert"), # Stephen Colbert
+  screwer: u1,
+  intensity: 9,
+  event: User.get_event("fear")
+})
+sc3 = Screwconnector.create({
+  screw: User.find_by_lname("Boehner"), # John Boehner
+  screwer: u1,
+  intensity: 6,
+  event: User.get_event("elections")
+})
 
 puts "Done!"

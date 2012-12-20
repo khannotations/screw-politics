@@ -90,6 +90,7 @@
                 = render :partial => "match_sc", :locals => {:sc => sc}
 
 #match_modal.modal.hide.fade.in
+
   .modal-header
     %a.close{"data-dismiss" => "modal"} &times;
     %h3 
@@ -109,7 +110,6 @@
       with intensity
       %b.match_intensity
       \.
-      %br
       %br
       Profession: 
       %b.match_major
@@ -131,7 +131,6 @@
         %b.match_gen
         looking for 
         %b.match_pref
-        %br
         %br
         Profession: 
         %b.match_major

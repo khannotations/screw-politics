@@ -147,7 +147,10 @@ $(document).ready(function() {
           $("#error").html(data.flash).parents(".alert").slideDown("fast");
         }
         else {
-          $("#success").html("Nice, you've got a new screw!").parents(".alert").slideDown("fast");
+          $("#success")
+            .html("Nice, you've got a new screw! Click 'Match' to start pairing them!")
+            .parents(".alert")
+            .slideDown("fast");
           if(!$(".client").length)
             $("#screws_container").html(data);
           else

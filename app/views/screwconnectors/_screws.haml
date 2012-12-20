@@ -1,4 +1,4 @@
-%h6 People you're screwing:
+%h6 People you're "screwing", aka trying to find dates for:
 - help_text = ""
 
 #screws_container.row{:style => "margin-left: 0px;"}
@@ -7,8 +7,8 @@
       = render :partial => "screwconnectors/main", :locals => {:sc => sc}
     - help_text = "Add another:"
   - else
-    %p You're not screwing anyone right now.
-    - help_text = "Start setting someone up right here:"
+    %p You're not screwing anyone right now—type a name into the box below!
+    - help_text = ""# "Start setting someone up right here:"
 %br
 %h6= help_text
 #client_box.control-group
